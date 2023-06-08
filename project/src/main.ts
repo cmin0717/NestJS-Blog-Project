@@ -75,11 +75,12 @@ class Application {
       }),
     );
 
+    // passport에서 session을 사용하기 때문에 세션 설정을 해주어야한다.
     app.use(
       expressSession({
-        secret: 'SECRET',
-        resave: true,
-        saveUninitialized: true,
+        secret: process.env.SECRET_KEY, // 세션 id 쿠키에 서명하는데 사용된다.
+        resave: true, // 요청 중에 세션이 수정되지 않은 경우에도 세션이 세션 저장소에 다시 저장된다. (디폴트값 true)
+        saveUninitialized: true, // 초기화되지 않은 세션을 강제로 저장소에 저장 (디폴트값 true)
       }),
     );
 
