@@ -4,6 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpExceptionFillter } from './common/exceptions/exception.fillter';
+import * as expressSession from 'express-session';
 import * as expressBasicAuth from 'express-basic-auth';
 import * as cookieParser from 'cookie-parser';
 import * as passport from 'passport';
@@ -71,6 +72,14 @@ class Application {
     app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
+      }),
+    );
+
+    app.use(
+      expressSession({
+        secret: 'SECRET',
+        resave: true,
+        saveUninitialized: true,
       }),
     );
 
