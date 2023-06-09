@@ -13,7 +13,7 @@ export class UsersRepository {
 
   async findUser(email: string) {
     try {
-      const user = await this.userentity.exist({ where: { email } });
+      const user = await this.userentity.findOne({ where: { email } });
       return user;
     } catch (error) {
       throw new HttpException('DB 오류!', 400);
@@ -25,6 +25,15 @@ export class UsersRepository {
       return await this.userentity.save({ ...info });
     } catch (error) {
       throw new HttpException('DB 오류', 400);
+    }
+  }
+
+  async findUserId(id: string) {
+    try {
+      const user = await this.userentity.findOne({ where: { id } });
+      return user;
+    } catch (error) {
+      throw new HttpException('해당 유저를 찾을수 없습니다.', 400);
     }
   }
 }

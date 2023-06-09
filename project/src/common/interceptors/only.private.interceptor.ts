@@ -14,6 +14,6 @@ export class OnlyPrivateInterceptor implements NestInterceptor {
     const req: Request = context.switchToHttp().getRequest();
     const user = req.user;
     if (user) return next.handle().pipe(map((data) => data));
-    else throw new HttpException('인증에 문제가 있습니다', 401);
+    else throw new HttpException('인증에 문제가 있습니다!', 401);
   }
 }
