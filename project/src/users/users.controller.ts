@@ -12,7 +12,7 @@ import {
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from './jwt/jwt.guard';
-import { CurrentUser } from 'src/common/decorators/current.user.decorator';
+import { CurrentUser } from '../common/decorators/current.user.decorator';
 import { UserDto } from './dtos/user.dto';
 import { UserRegisterDto } from './dtos/user-register.dto';
 import { userLogInDto } from './dtos/user-login.dto';
@@ -51,9 +51,14 @@ export class UsersController {
   async logout(@Res({ passthrough: true }) res: Response) {
     try {
       res.clearCookie('jwt');
-      res.send({ msg: '로그아웃 성공' });
+      res.status(200).send({ msg: '로그아웃 성공' });
     } catch (error) {
       throw new HttpException('로그아웃 실패', 400);
     }
   }
+  // @Res() 와 @Res({ passthrough: true })의 차이점
+  // @Res() 데코레이터로 데코레이트된 자원은 리소스 풀에 등록되고, 리소스 풀에서 해당 자원을 가져올 때마다 새 객체를 생성
+  // @Res({passthrough: true}) 데코레이터로 데코레이트된 자원은 리소스 풀에 등록되고, 리소스 풀에서 해당 자원을 가져올 때마다 원본 객체를 반환
+  // 각 명령마다 새로운 객체를 가져오냐 원본을 가져오냐 차이인듯하다.
+  // 현재는 쿠키를 사용해야하기에 원본을 가져와야 한다. 새로운 객체를 가져오면 새로운 쿠키가 생성됨으로
 }

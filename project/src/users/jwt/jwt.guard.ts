@@ -10,7 +10,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   // handleRequest 매서드는 인증에 통과했을경우 실행된다.
-  handleRequest(err: any, user: any, info: any) {
+  // err매개변수는 사용하지 않아도 첫번째 인자로 받아야한다.
+  handleRequest(err: any, user: any) {
     // 인증에 성공하면 user객체를 다음 차례로 리턴한다.
     return user;
   }

@@ -51,7 +51,7 @@ export class UsersService {
         { id: user.id },
         { secret: process.env.SECRET_KEY },
       );
-      // 쿠키에 jwt 저장
+      // 쿠키에 jwt 저장 // { httpOnly: true }옵션은 클라이언트에서 쿠키를 읽지 못하게 하는옵션이다.(보안 때문에)
       res.cookie('jwt', jwt, { httpOnly: true });
       return user;
     } catch (error) {
@@ -59,3 +59,9 @@ export class UsersService {
     }
   }
 }
+
+// 쿠키 옵션
+// httpOnly: 이 속성이 true로 설정되면 클라이언트 측에서 쿠키를 읽을 수 없습니다. 이 속성은 보안을 위해 유용합니다.
+// secure: 이 속성이 true로 설정되면 쿠키는 HTTPS 연결을 통해서만 전송됩니다. 이 속성은 보안을 위해 유용합니다.
+// expires: 이 속성은 쿠키의 만료 날짜를 지정합니다. 쿠키의 만료 날짜가 지난 후에는 클라이언트는 쿠키를 받지 않습니다.
+// maxAge: 이 속성은 쿠키의 최대 유효 기간을 지정합니다. 쿠키의 최대 유효 기간이 지난 후에는 클라이언트는 쿠키를 받지 않습니다.
