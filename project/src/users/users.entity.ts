@@ -2,6 +2,7 @@ import { CommonEntity } from '../common/entities/common.entity';
 import { Column, Entity } from 'typeorm';
 import { IsEmail, IsNotEmpty, IsString, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 // 테이블명 지정 (지정하지 않을경우 클래스명을 테이블명으로 설정한다.)
 @Entity({ name: 'USER' })
@@ -25,13 +26,8 @@ export class UserEntity extends CommonEntity {
   username: string;
 
   // PassWord
-  @ApiProperty({
-    example: '1234',
-    description: '회원가입시 입력한 비밀번호',
-    required: true,
-  })
-  @IsString()
-  @IsNotEmpty({ message: '비밀번호를 입력해주세요' })
+  // Exclude 데코레이터를 사용하여 데이터를 전달할때는 password가 포함되지 않게 한다.
+  @Exclude()
   @Column({ type: 'varchar', nullable: false })
   password: string;
 

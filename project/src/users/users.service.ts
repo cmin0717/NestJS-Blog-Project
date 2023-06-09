@@ -26,7 +26,7 @@ export class UsersService {
       password: hashPassWord,
     });
 
-    return user;
+    return user ? true : false;
   }
 
   async logIn(body: userLogInDto, res: Response) {

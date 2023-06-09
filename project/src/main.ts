@@ -1,7 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpExceptionFillter } from './common/exceptions/exception.fillter';
 import * as expressSession from 'express-session';
@@ -87,6 +91,11 @@ class Application {
     // passport 설정
     app.use(passport.initialize()); // passport.initialize 미들웨어는 요청 (req 객체) 에 passport 설정
     app.use(passport.session()); // passport.session 미들웨어는 req.session 객체에 passport 인증 완료 정보를 저장
+
+    // Exclude를 사용하기 위해 인터셉터를 설치
+    app.useGlobalInterceptors(
+      new ClassSerializerInterceptor(app.get(Reflector)),
+    );
 
     // 예외처리 필터 설정
     app.useGlobalFilters(new HttpExceptionFillter());

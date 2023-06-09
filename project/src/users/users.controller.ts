@@ -34,7 +34,12 @@ export class UsersController {
   @Post()
   @ApiOperation({ summary: '회원가입' })
   async signUp(@Body() body: UserRegisterDto) {
-    return this.usersService.signUp(body);
+    const result = await this.usersService.signUp(body);
+    if (result) {
+      throw new HttpException('회원 가입 성공!', 200);
+    } else {
+      throw new HttpException('회원 가입 오류!', 400);
+    }
   }
 
   @Post('login')
@@ -51,10 +56,10 @@ export class UsersController {
   async logout(@Res({ passthrough: true }) res: Response) {
     try {
       res.clearCookie('jwt');
-      res.status(200).send({ msg: '로그아웃 성공' });
     } catch (error) {
       throw new HttpException('로그아웃 실패', 400);
     }
+    throw new HttpException('로그아웃 완료', 200);
   }
   // @Res() 와 @Res({ passthrough: true })의 차이점
   // @Res() 데코레이터로 데코레이트된 자원은 리소스 풀에 등록되고, 리소스 풀에서 해당 자원을 가져올 때마다 새 객체를 생성
