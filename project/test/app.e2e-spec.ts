@@ -71,3 +71,4 @@ describe('AppController (e2e)', () => {
 // 테스트 실행 : npm run test:e2e
 // import하는 모듈들을 상대 경로로 설정해주어야한다.
 // 테스트용 db를 사용하는것도 나쁘지 않다.
+// JEST 공식 문서를 참고 하자.

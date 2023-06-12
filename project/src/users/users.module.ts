@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './users.entity';
 import { UsersRepository } from './user.repository';
 import { JwtStrategy } from './jwt/jwt.strategy';
+import { ProfileEntity } from 'src/profile/entities/profile.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { JwtStrategy } from './jwt/jwt.strategy';
     }),
     // 해당 모듈에서 사용할 entitiy를 TypeOrmModule.forFeature([])안에 넣어준다.
     // 몽구스에서 스키마를 지정해주는것과 같은 느낌인듯 하다.
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, ProfileEntity]),
   ],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository, JwtStrategy],

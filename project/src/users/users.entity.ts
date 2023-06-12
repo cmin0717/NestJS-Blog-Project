@@ -1,8 +1,9 @@
 import { CommonEntity } from '../common/entities/common.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { IsEmail, IsNotEmpty, IsString, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
+import { ProfileEntity } from 'src/profile/entities/profile.entity';
 
 // 테이블명 지정 (지정하지 않을경우 클래스명을 테이블명으로 설정한다.)
 @Entity({ name: 'USER' })
@@ -40,6 +41,10 @@ export class UserEntity extends CommonEntity {
   @IsBoolean()
   @Column({ type: 'boolean', default: false })
   isAdmin: boolean;
+
+  @OneToOne(() => ProfileEntity)
+  @JoinColumn({ name: 'profile_id', referencedColumnName: 'id' })
+  profile_id: ProfileEntity;
 }
 
 // @Index(): 데이터베이스 테이블의 검색 속도를 향상시키기 위한 자료구조, B+ Tree 알고리즘을 사용, 책에 색인(목차)을 추가하는 것과 같음
