@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CommonEntity } from 'src/common/entities/common.entity';
-import { Column, Entity } from 'typeorm';
+import { UserEntity } from 'src/users/users.entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'BLOGS' })
 export class BlogEntity extends CommonEntity {
@@ -15,4 +16,11 @@ export class BlogEntity extends CommonEntity {
   @ApiProperty({ example: '어쩌구 저쩌구,,,', description: '블로그 내용' })
   @Column({ type: 'text', nullable: true })
   context: string;
+
+  @ManyToOne(() => UserEntity, (user: UserEntity) => user.blogs, {
+    // onDelete: 'CASCADE' 옵션을 주었기에 해당 엔티티가 삭제시 관계있는 user의 blogs에서 자동 삭제 된다.
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'author', referencedColumnName: 'id' })
+  author: UserEntity;
 }

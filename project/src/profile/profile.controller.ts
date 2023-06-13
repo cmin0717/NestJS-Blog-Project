@@ -59,6 +59,6 @@ export class ProfileController {
   @ApiOperation({ summary: '프로필 삭제' })
   async deleteProfile(@CurrentUser() user: UserDto) {
     await this.profileService.removeProfile(user.id);
-    throw new HttpException('프로필 삭제 완료', 200);
+    return '프로필 삭제 완료';
   }
 }

@@ -17,14 +17,18 @@ export class ProfileRepository {
 
   async createProfile(user_id: string, info: CreateProfileDto) {
     try {
-      const profile = await this.profileRepository.save({ ...info });
       const user = await this.userRepository.findOne({
         where: { id: user_id },
+        relations: { profile_id: true },
       });
+      if (user.profile_id) {
+        throw new HttpException('이미 프로필이 존재합니다.', 400);
+      }
+      const profile = await this.profileRepository.save({ ...info });
       user.profile_id = profile;
       return await this.userRepository.save(user);
     } catch (error) {
-      throw new HttpException('프로필 생성 오류', 400);
+      throw new HttpException(error.message, error.status);
     }
   }
 
@@ -64,8 +68,7 @@ export class ProfileRepository {
         relations: ['profile_id'],
         where: { id: user_id },
       });
-      user.profile_id.bio = updateProfile.bio;
-      user.profile_id.site = updateProfile.site;
+      user.profile_id = { ...user.profile_id, ...updateProfile };
       return await this.userRepository.save(user);
     } catch (error) {
       throw new HttpException('프로필 수정 오류', 400);
@@ -75,7 +78,7 @@ export class ProfileRepository {
   async removeProfile(user_id: string, profile: ProfileEntity) {
     try {
       const user = await this.userRepository.findOne({
-        relations: ['profile_id'],
+        relations: { profile_id: true },
         where: { id: user_id },
       });
       // 자식 엔티티를 삭제할때는 해당 엔티티와 관계가 있는 컬럼을 null로 변경해준다.(undefinde x null O)

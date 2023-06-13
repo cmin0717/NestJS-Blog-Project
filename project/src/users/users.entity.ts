@@ -1,9 +1,10 @@
 import { CommonEntity } from '../common/entities/common.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { IsEmail, IsNotEmpty, IsString, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { ProfileEntity } from 'src/profile/entities/profile.entity';
+import { BlogEntity } from 'src/blog/entities/blog.entity';
 
 // 테이블명 지정 (지정하지 않을경우 클래스명을 테이블명으로 설정한다.)
 @Entity({ name: 'USER' })
@@ -43,9 +44,19 @@ export class UserEntity extends CommonEntity {
   isAdmin: boolean;
 
   // profile 관계성 부여 (1 대 1)
+  //  @OneToOne : 첫번째 인자로는 어디 엔티티와 매핑할지, 두번째 인자는 매핑시 옵션
   @OneToOne(() => ProfileEntity, { cascade: true }) // cascade옵션을 부여하여 user에서 profile를 바꾸면 profile 테이블 정보도 바뀌게 설정
   @JoinColumn({ name: 'profile_id', referencedColumnName: 'id' })
   profile_id: ProfileEntity;
+
+  // blog 관계성 부여 (1 대 N)
+  // @OneToMany : 첫번째 인자는 어디 엔티티와 매핑할지, 두번째 인자는 매핑될 필드, 세번째는 옵션
+  // ManyToOne은 반드시 사용해야하지만 1 대 N 매핑에서 @OneToMany는 사용하지 않아도 된다.
+  // 유저측에서 수정시 blog값을 변경해주기 위해 cascade를 사용하기 위해서 onetomany를 사용했다.
+  @OneToMany(() => BlogEntity, (blog: BlogEntity) => blog.author, {
+    cascade: true,
+  })
+  blogs: BlogEntity[];
 }
 
 // @Index(): 데이터베이스 테이블의 검색 속도를 향상시키기 위한 자료구조, B+ Tree 알고리즘을 사용, 책에 색인(목차)을 추가하는 것과 같음

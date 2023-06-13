@@ -12,7 +12,12 @@ export class ProfileService {
   }
 
   async findAllProfile() {
-    return await this.profileRepository.findAllProfile();
+    const profiles = await this.profileRepository.findAllProfile();
+    if (profiles.length !== 0) {
+      return profiles;
+    } else {
+      throw new HttpException('프로필이 존재하지 않습니다.', 400);
+    }
   }
 
   async findProfile(user_id: string) {

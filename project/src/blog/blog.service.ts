@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { BlogRepository } from './blog.repository';
 
 @Injectable()
 export class BlogService {
-  create(createBlogDto: CreateBlogDto) {
-    return 'This action adds a new blog';
+  constructor(private readonly blogRepository: BlogRepository) {}
+
+  async createBlog(user_id: string, createBlogDto: CreateBlogDto) {
+    return await this.blogRepository.create(user_id, createBlogDto);
   }
 
-  findAll() {
-    return `This action returns all blog`;
+  async findAllBlog() {
+    const blogs = await this.blogRepository.findAllBlog();
+
+    if (blogs) {
+      return blogs;
+    } else {
+      throw new HttpException('블로그 글이 존재하지 않습니다.', 400);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blog`;
+  async findBlog(user_id: string) {
+    const blogs = await this.blogRepository.findBlog(user_id);
+
+    if (blogs) {
+      return blogs;
+    } else {
+      throw new HttpException('해당 유저의 글이 존재 하지 않습니다', 400);
+    }
   }
 
-  update(id: number, updateBlogDto: UpdateBlogDto) {
-    return `This action updates a #${id} blog`;
+  async updateBlog(blog_id: string, updateBlogDto: UpdateBlogDto) {
+    return await this.blogRepository.updateBlog(blog_id, updateBlogDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} blog`;
+  async removeBlog(blog_id: string) {
+    return await this.blogRepository.removeBlog(blog_id);
   }
 }
