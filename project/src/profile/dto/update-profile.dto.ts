@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateProfileDto } from './create-profile.dto';
+import { PickType } from '@nestjs/swagger';
+import { ProfileEntity } from '../entities/profile.entity';
 
-export class UpdateProfileDto extends PartialType(CreateProfileDto) {}
+export class UpdateProfileDto extends PickType(ProfileEntity, [
+  'bio',
+  'site',
+] as const) {}

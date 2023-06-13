@@ -42,7 +42,8 @@ export class UserEntity extends CommonEntity {
   @Column({ type: 'boolean', default: false })
   isAdmin: boolean;
 
-  @OneToOne(() => ProfileEntity)
+  // profile 관계성 부여 (1 대 1)
+  @OneToOne(() => ProfileEntity, { cascade: true }) // cascade옵션을 부여하여 user에서 profile를 바꾸면 profile 테이블 정보도 바뀌게 설정
   @JoinColumn({ name: 'profile_id', referencedColumnName: 'id' })
   profile_id: ProfileEntity;
 }
@@ -57,3 +58,9 @@ export class UserEntity extends CommonEntity {
 // JOIN,WHERE 또는 ORDER BY절에서 자주 사용되는 컬럼
 // 예시
 // user 테이블의 id에 @Index() 사용
+
+// realation의 옵션
+// eager	(기본 false) : true일시 find로 엔티티를 불러올때 해당 연관 관계를 자동으로 같이 불러옴
+// cascade	(기본 false) : 부모 테이블의 값이 수정이나 삭제가 발생하면, 해당 값을 참조하고 있는 자식 테이블의 역시 종속적으로 수정 및 삭제가 일어나도록 하는 옵션
+// onDelete	: 엔티티가 삭제될 시 어떻게 행동할지 지정하는 옵션 가능한 값으로는 "RESTRICT" , "CASCADE" , "SET NULL" 가 있음
+// nullable (기본 true) : 기본 해당 연관 관계가 nullable 한지 여부 (FK의 nullable과 동일)
