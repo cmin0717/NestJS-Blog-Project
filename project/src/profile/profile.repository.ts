@@ -16,6 +16,7 @@ export class ProfileRepository {
   ) {}
 
   async createProfile(user_id: string, info: CreateProfileDto) {
+    // 이렇게 두개의 테이블에 테이터를 저장시에는 Transaction를 사용하여 데이터의 안정성을 높여줄수도있다.
     try {
       const user = await this.userRepository.findOne({
         where: { id: user_id },
@@ -91,3 +92,31 @@ export class ProfileRepository {
     }
   }
 }
+
+// Transaction를 이용한 데이터베이스 롤백
+// 한 작업에서 여러 데이터 베이스를 수정할때 한쪽은 정상 수정되었지만 한쪽은 오류를 발생시켰다면
+// 작업은 중단되지만 정상 변경된 데이터 베이스는 값이 바뀐후라서 문제가 될수있다.
+// 그렇기에 둘다 정상 처리 되어야만 데이터 베이스에 커밋되게 해야한다.
+
+// 이런 형태로 진행된다.
+// @Injectable()
+// export class UsersRepository {
+//   constructor(
+//     @InjectRepository(UserEntity)
+//     private readonly userentity: Repository<UserEntity>,
+//   ) {}
+
+//   async findUser(email: string) {
+//     await this.userentity.queryRunner.startTransaction(); // Transaction의 시작점
+//     try {
+//       const user = await this.userentity.findOne({ where: { email } });
+//       await this.userentity.queryRunner.commitTransaction(); // Transaction의 커밋
+//       return user;
+//     } catch (error) {
+//       await this.userentity.queryRunner.rollbackTransaction(); // Transaction의 롤백(오류 발생시 시작점으로 롤백한다.)
+//       throw new HttpException('DB 오류!', 400);
+//     } finally {
+//       await this.userentity.queryRunner.release(); // 생성된 데이터베이스 연결을 끊어준다.
+//                                            // 데이터 베이스는 한정된 연결만 가능함으로 Transaction으로 연결했으면 작업후 꼭 끊어주어야한다.(쌓이지 않게)
+//     }
+//   }

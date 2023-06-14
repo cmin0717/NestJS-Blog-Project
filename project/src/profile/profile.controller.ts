@@ -8,7 +8,6 @@ import {
   Post,
   Patch,
   Delete,
-  HttpException,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { JwtAuthGuard } from 'src/users/jwt/jwt.guard';

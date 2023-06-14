@@ -85,4 +85,41 @@ export class BlogRepository {
       throw new HttpException(error.message, error.status);
     }
   }
+
+  async findBlogId(blog_id: string) {
+    try {
+      const blog = await this.blogRepository.findOne({
+        where: { id: blog_id },
+        relations: { visitors: true },
+      });
+
+      if (blog) {
+        return blog;
+      } else {
+        throw new HttpException('해당 블로그가 존재하지 않습니다.', 400);
+      }
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
+  }
+
+  async saveBlog(blog: BlogEntity) {
+    try {
+      return await this.blogRepository.save(blog);
+    } catch (error) {
+      throw new HttpException('블로그 저장 실패', 400);
+    }
+  }
+
+  async findVisitor(blog_id: string) {
+    try {
+      const blog = await this.blogRepository.findOne({
+        where: { id: blog_id },
+        relations: { visitors: true },
+      });
+      return blog.visitors;
+    } catch (error) {
+      throw new HttpException('DB 접근 오류', 400);
+    }
+  }
 }

@@ -38,4 +38,13 @@ export class BlogService {
   async removeBlog(blog_id: string) {
     return await this.blogRepository.removeBlog(blog_id);
   }
+
+  async findVisitor(blog_id: string) {
+    const visitors = await this.blogRepository.findVisitor(blog_id);
+    if (visitors.length !== 0) {
+      return visitors;
+    } else {
+      throw new HttpException('방문자가 없습니다.', 400);
+    }
+  }
 }

@@ -12,5 +12,6 @@ import { BlogRepository } from './blog.repository';
   imports: [TypeOrmModule.forFeature([BlogEntity, UserEntity]), UsersModule],
   controllers: [BlogController],
   providers: [BlogService, UserDto, BlogRepository],
+  exports: [BlogRepository],
 })
 export class BlogModule {}

@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CommonEntity } from 'src/common/entities/common.entity';
 import { UserEntity } from 'src/users/users.entity';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { VisitorEntity } from 'src/visitor/entities/visitor.entity';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity({ name: 'BLOGS' })
 export class BlogEntity extends CommonEntity {
@@ -23,4 +24,9 @@ export class BlogEntity extends CommonEntity {
   })
   @JoinColumn({ name: 'author', referencedColumnName: 'id' })
   author: UserEntity;
+
+  @OneToMany(() => VisitorEntity, (visitor: VisitorEntity) => visitor.blog, {
+    cascade: true,
+  })
+  visitors: VisitorEntity[];
 }

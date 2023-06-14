@@ -50,7 +50,7 @@ class Application {
       SwaggerModule.createDocument(
         this.server,
         new DocumentBuilder()
-          .setTitle('Blog-API')
+          .setTitle('Blog-Project')
           .setDescription('TypeORM-NEST')
           .setVersion('0.0.1')
           .build(),

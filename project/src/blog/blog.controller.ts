@@ -60,4 +60,10 @@ export class BlogController {
   async remove(@Param('id') blog_id: string) {
     return await this.blogService.removeBlog(blog_id);
   }
+
+  @Get('visitors:id')
+  @ApiOperation({ summary: '블로그 방문자 확인' })
+  async findVisitor(@Param('id') blog_id: string) {
+    return await this.blogService.findVisitor(blog_id);
+  }
 }
