@@ -7,8 +7,12 @@ import { BlogRepository } from './blog.repository';
 export class BlogService {
   constructor(private readonly blogRepository: BlogRepository) {}
 
-  async createBlog(user_id: string, createBlogDto: CreateBlogDto) {
-    return await this.blogRepository.create(user_id, createBlogDto);
+  async createBlog(
+    user_id: string,
+    createBlogDto: CreateBlogDto,
+    tags: string[],
+  ) {
+    return await this.blogRepository.create(user_id, createBlogDto, tags);
   }
 
   async findAllBlog() {
@@ -31,8 +35,12 @@ export class BlogService {
     }
   }
 
-  async updateBlog(blog_id: string, updateBlogDto: UpdateBlogDto) {
-    return await this.blogRepository.updateBlog(blog_id, updateBlogDto);
+  async updateBlog(
+    blog_id: string,
+    updateBlogDto: UpdateBlogDto,
+    tags: string[],
+  ) {
+    return await this.blogRepository.updateBlog(blog_id, updateBlogDto, tags);
   }
 
   async removeBlog(blog_id: string) {

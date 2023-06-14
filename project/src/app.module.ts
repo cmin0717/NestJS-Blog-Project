@@ -10,6 +10,11 @@ import { BlogModule } from './blog/blog.module';
 import { ProfileModule } from './profile/profile.module';
 import { TagModule } from './tag/tag.module';
 import { VisitorModule } from './visitor/visitor.module';
+import { ProfileEntity } from './profile/entities/profile.entity';
+import { BlogEntity } from './blog/entities/blog.entity';
+import { TagEntity } from './tag/entities/tag.entity';
+import { VisitorEntity } from './visitor/entities/visitor.entity';
+import { CommonEntity } from './common/entities/common.entity';
 
 @Module({
   imports: [
@@ -31,7 +36,13 @@ import { VisitorModule } from './visitor/visitor.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DATABASE,
-      entities: [UserEntity],
+      entities: [
+        UserEntity,
+        ProfileEntity,
+        BlogEntity,
+        TagEntity,
+        VisitorEntity,
+      ],
       // synchronize에서 초기화가 되어야하는데 그렇게 작동하지 못하고 있다. 이유를 찾지 못해서
       // 그냥 처음실행할때 스키마를 던지고 새로 만드는 형태로 가보려고 한다.(개발용으로)
       // dropSchema를 사용하니 테스트 코드 실행시 문제가 발생한다. 어찌해야하오....

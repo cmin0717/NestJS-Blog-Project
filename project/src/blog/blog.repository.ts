@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UserEntity } from 'src/users/users.entity';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { TagEntity } from 'src/tag/entities/tag.entity';
+import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
 export class BlogRepository {
@@ -13,22 +15,26 @@ export class BlogRepository {
     private readonly blogRepository: Repository<BlogEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly tagService: TagService,
   ) {}
 
-  async create(user_id: string, bloginfo: CreateBlogDto) {
+  async create(user_id: string, bloginfo: CreateBlogDto, tags: string[]) {
     try {
       const user = await this.userRepository.findOne({
         where: { id: user_id },
         // relations: { blogs: true },
       });
 
+      const tag_list = await this.tagService.createTags(tags);
+
       // user의 blogs에 cascade옵션을 설정했기에 blog에 저장하면 자동으로 user의 blogs컬럼에 추가된다.
       // blog의 fk을 설정할때는 위에처럼 관계형을 빼고 가져와야한다.
       const blog = await this.blogRepository.save({
         ...bloginfo,
         author: user,
+        tags: tag_list,
       });
-      await this.userRepository.save(user);
+      // await this.userRepository.save(user);
       return blog;
     } catch (error) {
       throw new HttpException('블로그 글 생성 오류', 400);
@@ -55,7 +61,7 @@ export class BlogRepository {
     }
   }
 
-  async updateBlog(blog_id: string, updateinfo: UpdateBlogDto) {
+  async updateBlog(blog_id: string, updateinfo: UpdateBlogDto, tags: string[]) {
     try {
       let blog = await this.blogRepository.findOne({
         where: { id: blog_id },
@@ -63,7 +69,10 @@ export class BlogRepository {
       if (!blog) {
         throw new HttpException('해당 블로그가 존재하지 않습니다.', 400);
       }
-      blog = { ...blog, ...updateinfo };
+
+      const tag_list = await this.tagService.createTags(tags);
+
+      blog = { ...blog, ...updateinfo, tags: tag_list };
       await this.blogRepository.save(blog);
       return blog;
     } catch (error) {
@@ -103,13 +112,14 @@ export class BlogRepository {
     }
   }
 
-  async saveBlog(blog: BlogEntity) {
-    try {
-      return await this.blogRepository.save(blog);
-    } catch (error) {
-      throw new HttpException('블로그 저장 실패', 400);
-    }
-  }
+  // cascade가 적용된 상태에서 또 저장하면 무한 루프에 빠진다.
+  // async saveBlog(blog: BlogEntity) {
+  //   try {
+  //     return await this.blogRepository.save(blog);
+  //   } catch (error) {
+  //     throw new HttpException('블로그 저장 실패', 400);
+  //   }
+  // }
 
   async findVisitor(blog_id: string) {
     try {

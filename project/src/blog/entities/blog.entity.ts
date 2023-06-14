@@ -1,8 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CommonEntity } from 'src/common/entities/common.entity';
+import { TagEntity } from 'src/tag/entities/tag.entity';
 import { UserEntity } from 'src/users/users.entity';
 import { VisitorEntity } from 'src/visitor/entities/visitor.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity({ name: 'BLOGS' })
 export class BlogEntity extends CommonEntity {
@@ -29,4 +38,12 @@ export class BlogEntity extends CommonEntity {
     cascade: true,
   })
   visitors: VisitorEntity[];
+
+  @ManyToMany(() => TagEntity, (tag) => tag.blogs)
+  @JoinTable({
+    name: 'Blog-Tag',
+    joinColumn: { name: 'blog_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'tag_id', referencedColumnName: 'id' },
+  })
+  tags: TagEntity[];
 }

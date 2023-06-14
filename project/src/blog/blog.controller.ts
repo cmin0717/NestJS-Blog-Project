@@ -17,6 +17,8 @@ import { JwtAuthGuard } from 'src/users/jwt/jwt.guard';
 import { OnlyPrivateInterceptor } from 'src/common/interceptors/only.private.interceptor';
 import { CurrentUser } from 'src/common/decorators/current.user.decorator';
 import { UserDto } from 'src/users/dtos/user.dto';
+// import { BlogTagPipe } from 'src/common/pipe/blog.tag.pipe';
+import { CreateBlogTagDto } from './dto/create-blog-tag.dto';
 
 @Controller('blog')
 @UseGuards(JwtAuthGuard)
@@ -29,9 +31,11 @@ export class BlogController {
   @ApiOperation({ summary: '블로그 글 생성' })
   async createBlog(
     @CurrentUser() user: UserDto,
-    @Body() createBlogDto: CreateBlogDto,
+    @Body() info: CreateBlogTagDto,
   ) {
-    return await this.blogService.createBlog(user.id, createBlogDto);
+    const bloginfo: CreateBlogDto = { ...info };
+    const tags: string[] = info.tags;
+    return await this.blogService.createBlog(user.id, bloginfo, tags);
   }
 
   @Get()
@@ -50,9 +54,11 @@ export class BlogController {
   @ApiOperation({ summary: '블로그 글 수정' })
   async updateBlog(
     @Param('id') blog_id: string,
-    @Body() updateBlogDto: UpdateBlogDto,
+    @Body() info: CreateBlogTagDto,
   ) {
-    return await this.blogService.updateBlog(blog_id, updateBlogDto);
+    const bloginfo: UpdateBlogDto = { ...info };
+    const tags: string[] = info.tags;
+    return await this.blogService.updateBlog(blog_id, bloginfo, tags);
   }
 
   @Delete(':id')

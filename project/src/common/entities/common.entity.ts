@@ -12,6 +12,7 @@ export abstract class CommonEntity {
   // id
   @IsUUID()
   @PrimaryGeneratedColumn('uuid') // PrimaryGeneratedColumn : 자동생성되는 ID값을 표현하는 방식
+  // @PrimaryColumn({ generated: 'uuid' })
   id: string;
 
   // 생성 시간
