@@ -14,7 +14,6 @@ import { ProfileEntity } from './profile/entities/profile.entity';
 import { BlogEntity } from './blog/entities/blog.entity';
 import { TagEntity } from './tag/entities/tag.entity';
 import { VisitorEntity } from './visitor/entities/visitor.entity';
-import { CommonEntity } from './common/entities/common.entity';
 
 @Module({
   imports: [

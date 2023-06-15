@@ -53,18 +53,19 @@ export class BlogController {
   @Patch(':id')
   @ApiOperation({ summary: '블로그 글 수정' })
   async updateBlog(
+    @CurrentUser() user: UserDto,
     @Param('id') blog_id: string,
     @Body() info: CreateBlogTagDto,
   ) {
     const bloginfo: UpdateBlogDto = { ...info };
     const tags: string[] = info.tags;
-    return await this.blogService.updateBlog(blog_id, bloginfo, tags);
+    return await this.blogService.updateBlog(user.id, blog_id, bloginfo, tags);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '블로그 글 삭제' })
-  async remove(@Param('id') blog_id: string) {
-    return await this.blogService.removeBlog(blog_id);
+  async remove(@CurrentUser() user: UserDto, @Param('id') blog_id: string) {
+    return await this.blogService.removeBlog(user.id, blog_id);
   }
 
   @Get('visitors:id')

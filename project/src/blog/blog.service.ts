@@ -36,15 +36,21 @@ export class BlogService {
   }
 
   async updateBlog(
+    user_id: string,
     blog_id: string,
     updateBlogDto: UpdateBlogDto,
     tags: string[],
   ) {
-    return await this.blogRepository.updateBlog(blog_id, updateBlogDto, tags);
+    return await this.blogRepository.updateBlog(
+      user_id,
+      blog_id,
+      updateBlogDto,
+      tags,
+    );
   }
 
-  async removeBlog(blog_id: string) {
-    return await this.blogRepository.removeBlog(blog_id);
+  async removeBlog(user_id: string, blog_id: string) {
+    return await this.blogRepository.removeBlog(user_id, blog_id);
   }
 
   async findVisitor(blog_id: string) {

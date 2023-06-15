@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UserEntity } from 'src/users/users.entity';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-import { TagEntity } from 'src/tag/entities/tag.entity';
 import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
@@ -61,13 +60,23 @@ export class BlogRepository {
     }
   }
 
-  async updateBlog(blog_id: string, updateinfo: UpdateBlogDto, tags: string[]) {
+  async updateBlog(
+    user_id: string,
+    blog_id: string,
+    updateinfo: UpdateBlogDto,
+    tags: string[],
+  ) {
     try {
       let blog = await this.blogRepository.findOne({
         where: { id: blog_id },
+        relations: { author: true },
       });
       if (!blog) {
         throw new HttpException('해당 블로그가 존재하지 않습니다.', 400);
+      }
+
+      if (blog.author.id !== user_id) {
+        throw new HttpException('작성자만 접근할수있습니다.', 400);
       }
 
       const tag_list = await this.tagService.createTags(tags);
@@ -80,13 +89,18 @@ export class BlogRepository {
     }
   }
 
-  async removeBlog(blog_id: string) {
+  async removeBlog(user_id: string, blog_id: string) {
     try {
       const blog = await this.blogRepository.findOne({
         where: { id: blog_id },
+        relations: { author: true },
       });
       if (!blog) {
         throw new HttpException('해당 블로그가 존재하지 않습니다.', 400);
+      }
+
+      if (blog.author.id !== user_id) {
+        throw new HttpException('작성자만 접근할수 있습니다.', 400);
       }
       await this.blogRepository.delete({ id: blog_id });
       return '정상적으로 삭제되었습니다.';
