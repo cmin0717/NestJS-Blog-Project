@@ -4,7 +4,7 @@
 * TypeORM를 이용하여 CRUD 구현
 
 ## 1. User 관련 API
-(https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/f9116dd6-3c46-4bdc-8ef8-6c1592af30b0)
+![initial](https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/f9116dd6-3c46-4bdc-8ef8-6c1592af30b0)
 * 회원가입시 class-validator 라이브러리를 이용하여 유효성 판단
 * 로그인시 JWT 토큰을 이용하여 로그인 후 쿠키에 저장
 * 로그아웃시 쿠키에 저장된 토큰값을 초기화
