@@ -11,7 +11,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       // jwt 추출 방법
       jwtFromRequest: ExtractJwt.fromExtractors([jwtExtractorFromCookie]),
+      // jwt 서명 키
       secretOrKey: process.env.SECRET_KEY,
+      // 만료된 토큰을 어떻게 처리할지 (false이면 만료된 토큰일 경우 에러 발생)
       ignoreExpiration: false,
     });
   }
@@ -41,6 +43,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 // 6. 만일 같지 않다면 인증되지 못한 사용자이다.
 // 7. 로그아웃시에는 DB에 저장된 Refresh Token토큰 값을 지워준다.
 
+// 재발급과정은 여러 방법이 있다.
+// 1. 프론트에서 미리 토큰을 확인후 재발급 할수도 있고
+// 2. 만료된 토큰이라고 통보 받으면 그때 다시 재발급할수도 있고
+// 3. 서버측에서 만료된 토큰이면 확인후 재발급할수도있고
+
+// 토큰의 탈취(풀리지 않은 궁금증)
 // Access Token토큰의 탈취를 막기 위해 Refresh Token을 사용하는데 둘다 어차피 클라이언트 쿠키나 세션에 같이 있을텐데
 // 그럼 같이 탈취되는거 아닌가??
 

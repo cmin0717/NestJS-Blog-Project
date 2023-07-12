@@ -45,7 +45,7 @@ export class ProfileController {
     return await this.profileService.findAllProfile();
   }
 
-  @Patch('update')
+  @Patch()
   @ApiOperation({ summary: '현재 유저 프로필 수정' })
   async updateProfile(
     @CurrentUser() user: UserDto,
@@ -54,8 +54,8 @@ export class ProfileController {
     return await this.profileService.updateProfile(user.id, info);
   }
 
-  @Delete('delete')
-  @ApiOperation({ summary: '프로필 삭제' })
+  @Delete()
+  @ApiOperation({ summary: '현재 유저 프로필 삭제' })
   async deleteProfile(@CurrentUser() user: UserDto) {
     await this.profileService.removeProfile(user.id);
     return '프로필 삭제 완료';
