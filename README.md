@@ -10,20 +10,20 @@
 * 로그아웃시 쿠키에 저장된 토큰값을 초기화
 
 ## 2. Blog 글 관련 API
-(https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/6f2b53c8-bae9-49f8-bbd3-9e95cd8b9f4d)
+![initial](https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/6f2b53c8-bae9-49f8-bbd3-9e95cd8b9f4d)
 * 가드 데코레이터를 사용하여 회원만 접근 가능
 * User와 다대일 관계 형성
 * Tag와 다대다 관계 형성
 * Visitor와 일대다 괄계 형성
 
 ## 3. Tag 관련 API
-(https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/50df45f6-9e75-4527-be89-0e68d872dce3)
+![initial](https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/50df45f6-9e75-4527-be89-0e68d872dce3)
 * Blog와 다대다 관계 형성
 
 ## 4. Profile 관련 API
-(https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/873fc987-75f9-4225-8def-6f7f14441842)
+![initial](https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/873fc987-75f9-4225-8def-6f7f14441842)
 * User와 일대일 관계 형성
 
 ## 5. Visitor 관련 API
-(https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/9bc97ae2-f98f-421e-98a3-d573418c78c6)
+![initial](https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/9bc97ae2-f98f-421e-98a3-d573418c78c6)
 * Blog와 다대일 관계 형성
