@@ -27,3 +27,6 @@
 ## 5. Visitor 관련 API
 ![initial](https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/9bc97ae2-f98f-421e-98a3-d573418c78c6)
 * Blog와 다대일 관계 형성
+
+## DTO
+![initial](https://github.com/cmin0717/NestJS-Blog-Project/assets/116286726/4cdf1d01-ba79-46dd-9029-46da8a04a6ca)
